@@ -99,6 +99,14 @@ export default function Home() {
   useEffect(() => {
     questionInputRef.current?.focus();
     fetchSolanaCost();
+    setMessages([
+      {
+        isUser: false,
+        id: "",
+        text: "Hello there! Welcome to Solana-GPT! Here you can spend small amounts of solana per Chat-GPT4 question. To start you will need to:\n\n1. Connect your Solana wallet\n2. Load up your Hopper\n3. Ask a question!\n\nHow may I help?",
+        role: "system"
+      },
+    ])
   }, []);
 
 
@@ -408,26 +416,25 @@ export default function Home() {
           </div>
         )}
 
-        {/* Chat Section */}
-        <div
-          className="flex-grow overflow-auto space-y-4 flex items-center justify-center"
-          style={{ height: "80vh"}}
-        >
-          <div className="w-full h-full overflow-y-auto px-20">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`my-5 mx-4 p-3 rounded-lg ${
-                  message.isUser
-                    ? "ml-auto bg-blue-500 text-white"
-                    : "mr-auto bg-gray-700 text-white"
-                } max-w-md`}
-              >
-                <p className="text-base">{message.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+{/* Chat Section */}
+<div
+  className="flex-grow overflow-auto space-y-4 flex items-center justify-center h-[80vh]"
+>
+  <div className="w-full h-full overflow-y-auto px-32 mr-32">
+    {messages.map((message, index) => (
+      <div
+        key={index}
+        className={`my-5 mx-4 p-3 rounded-lg max-w-md ${
+          message.isUser
+            ? "ml-auto bg-blue-500 text-white"
+            : "mr-auto bg-gray-700 text-white"
+        }`}
+      >
+        <p className="text-base whitespace-pre-wrap">{message.text}</p>
+      </div>
+    ))}
+  </div>
+</div>
 
         {/* Input Section */}
         <div className="flex flex-col items-center px-4 pb-2 bg-gray-800 border-t-2 border-gray-700">
