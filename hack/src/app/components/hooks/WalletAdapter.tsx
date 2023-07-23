@@ -11,7 +11,6 @@ import { Connection } from '@solana/web3.js';
 // Default styles that can be overridden by your app
 require('@solana/wallet-adapter-react-ui/styles.css');
 
-
 export interface WalletAdapterProps{
     children: React.ReactNode,
     rpcUrl: string,

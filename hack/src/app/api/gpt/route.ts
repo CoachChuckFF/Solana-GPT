@@ -28,20 +28,15 @@ export async function POST(req: Request) {
             parentMessageId
         })
 
-        // ---------- GET COST ------------------
-        const lamportsToSpend = getQuestionCost(question);
 
         // ---------- WITHDRAW SOLANA ------------------
-        
+
+        const lamportsToSpend = getQuestionCost(question);
         const hopperKey = new PublicKey(hopperKeyString);
         const ownerKey = new PublicKey(ownerKeyString);
         const apiProgram = getProgram();
 
         if(!apiProgram.provider.publicKey) throw new Error("Need provider!")
-
-        console.log(hopperKey.toString())
-        console.log(ownerKey.toString())
-        console.log(apiProgram.provider.publicKey.toString())
 
         await apiProgram.methods.withdraw(lamportsToSpend)
             .accounts({

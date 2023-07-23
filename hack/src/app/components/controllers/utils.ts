@@ -52,7 +52,6 @@ export function countTokens(text: string): number {
 
       if(data.error){ throw new Error(data.error);}
 
-      console.log(data);
       return data.response as ChatMessage;
 
     }

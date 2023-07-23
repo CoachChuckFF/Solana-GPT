@@ -23,6 +23,7 @@ import {
   PublicKey,
   SystemProgram,
   Transaction,
+  TransactionInstruction,
 } from "@solana/web3.js";
 import { getHopperKey } from "./components/controllers/hopper";
 
@@ -32,6 +33,9 @@ interface ExtendedChatMessage extends ChatMessage {
 type HopperStruct = IdlAccounts<Backend>["hopper"];
 
 export default function Home() {
+
+  // -------------- STATE ---------------------------
+  const [solanaPrice, setSolanaPrice] = useState<number | null>(null)
   const [questionText, setQuestionText] = useState("");
   const [questionCost, setQuestionCost] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,10 +49,12 @@ export default function Home() {
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet(); // For the program
   const walletModal = useWalletModal();
-
-  // Set autofocus to the question input
   const questionInputRef = useRef<HTMLTextAreaElement>(null);
 
+
+  // -------------- EFFECTS ---------------------------
+
+  // On Wallet
   useEffect(() => {
     if (anchorWallet) {
       const backendProgramProvider = new AnchorProvider(
@@ -77,17 +83,34 @@ export default function Home() {
     }
   }, [anchorWallet, wallet.publicKey]);
 
+  // On Program Update
   useEffect(() => {
     updateHopperAccount();
   }, [program, hopperKey]);
 
-  useEffect(() => {
-    questionInputRef.current?.focus();
-  }, []);
-
+  // Question Costs
   useEffect(() => {
     setQuestionCost(getQuestionCost(questionText).toNumber());
   }, [questionText, getQuestionCost, countTokens]);
+
+  // Focus on start
+  useEffect(() => {
+    questionInputRef.current?.focus();
+    fetchSolanaCost();
+  }, []);
+
+
+  // -------------- FUNCTIONS ---------------------------
+
+  const fetchSolanaCost = () => {
+    fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd").then((res)=>{
+      res.json().then((data)=>{
+        if(data.solana)
+          if(data.solana.usd)
+            setSolanaPrice(data.solana.usd)
+      })
+    })
+  }
 
   const updateHopperAccount = () => {
     if (program && hopperKey) {
@@ -102,9 +125,22 @@ export default function Home() {
     }
   };
 
+  const sendAndConfirmIx = async(ix: TransactionInstruction)=>{
+    if (!connection) throw new Error("Needs a connection");
+    if (!wallet) throw new Error("Needs a wallet");
+
+    const tx = new Transaction().add(ix);
+    const txSig = await wallet.sendTransaction(tx, connection);
+    const latestBlockHash = await connection.getLatestBlockhash();
+    return connection.confirmTransaction({
+      blockhash: latestBlockHash.blockhash,
+      lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+      signature: txSig,
+    });
+  }
+
   const createOrLoadHopperAccount = async (lamports: number) => {
     if (isLoading) return;
-
     setIsLoading(true);
 
     try {
@@ -123,16 +159,8 @@ export default function Home() {
         })
         .instruction();
 
-      const tx = new Transaction();
-      tx.add(ix);
+      await sendAndConfirmIx(ix)
 
-      const txSig = await wallet.sendTransaction(tx, connection);
-      const latestBlockHash = await connection.getLatestBlockhash();
-      await connection.confirmTransaction({
-        blockhash: latestBlockHash.blockhash,
-        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-        signature: txSig,
-      });
     } catch (e) {
       console.log(e);
     }
@@ -162,16 +190,8 @@ export default function Home() {
         })
         .instruction();
 
-      const tx = new Transaction();
-      tx.add(ix);
+        await sendAndConfirmIx(ix)
 
-      const txSig = await wallet.sendTransaction(tx, connection);
-      const latestBlockHash = await connection.getLatestBlockhash();
-      await connection.confirmTransaction({
-        blockhash: latestBlockHash.blockhash,
-        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-        signature: txSig,
-      });
     } catch (e) {
       console.log(e);
     }
@@ -180,15 +200,13 @@ export default function Home() {
     setIsLoading(false);
   };
 
-  const handleInputChange = (e: any) => {
-    setQuestionText(e.target.value);
-  };
-
   const shake = () => {
     if (shakeFeedbackOn) return;
     setShakeFeedbackOn(true);
     setTimeout(() => setShakeFeedbackOn(false), 555);
   };
+
+  // ------------ HANDLERS -------------------
 
   const handleSendMessage = (e: any) => {
     // So Enter can be used
@@ -223,6 +241,9 @@ export default function Home() {
     if (isLoading) return;
     setIsLoading(true);
 
+    // Checks wallet sign
+    if (!wallet.signMessage) throw new Error("Wallet needs to sign");
+
     // Sets up question
     const userMessage: ExtendedChatMessage = {
       conversationId:
@@ -239,10 +260,9 @@ export default function Home() {
     const signatureMessage = `The following question: \n\n${questionText.substring(
       0,
       55
-    )}...\n\n will deduct roughly ~◎${questionCost} lamports from your loader account! \n\nSign to Agree`;
+    )}...\n\n will deduct roughly ~◎${questionCost} ${solanaPrice ? `( \$${(solanaPrice * questionCost / LAMPORTS_PER_SOL).toFixed(5)} )` : ''} lamports from your loader account! \n\nSign to Agree`;
     const encodedMessage = new TextEncoder().encode(signatureMessage);
 
-    if (!wallet.signMessage) throw new Error("Wallet needs to sign");
 
     wallet
       .signMessage(encodedMessage)
@@ -281,6 +301,10 @@ export default function Home() {
         console.error(e);
         setIsLoading(false);
       });
+  };
+
+  const handleInputChange = (e: any) => {
+    setQuestionText(e.target.value);
   };
 
   return (
@@ -325,14 +349,8 @@ export default function Home() {
               }}
               className="cursor-pointer hover:bg-blue-700 text-white font-bold px-4 rounded"
             >
-              🔥 Create 0.01
+              🔥 Create Hopper 0.01
             </button>
-          )}
-          {hopperAccount && (
-            <p className="cursor-pointer">
-              ◎{" "}
-              {(hopperAccount.loadedLamports / LAMPORTS_PER_SOL).toPrecision(8)}
-            </p>
           )}
           {hopperAccount && (
             <button
@@ -341,7 +359,7 @@ export default function Home() {
               }}
               className="cursor-pointer hover:bg-blue-700 text-white font-bold px-4 rounded"
             >
-              🚂 Load 0.01
+              🚂 Load Hopper 0.01
             </button>
           )}
           {hopperAccount && (
@@ -351,8 +369,14 @@ export default function Home() {
               }}
               className="cursor-pointer hover:bg-blue-700 text-white font-bold px-4 rounded"
             >
-              🚧 Close
+              🚧 Close Hopper
             </button>
+          )}
+          {hopperAccount && (
+            <p className=" hover:bg-blue-700 text-white font-bold px-4 rounded" onClick={updateHopperAccount}>
+              ◎{" "}
+              {(hopperAccount.loadedLamports / LAMPORTS_PER_SOL).toPrecision(8)}
+            </p>
           )}
         </div>
 
@@ -418,7 +442,7 @@ export default function Home() {
             {questionText
               ? `This question will cost roughly ~◎ ${(
                   questionCost / LAMPORTS_PER_SOL
-                ).toPrecision(2)}`
+                ).toPrecision(2)} ${solanaPrice ? `( \$${(solanaPrice * questionCost / LAMPORTS_PER_SOL).toFixed(5)} )` : ''}`
               : "Your Hopper account will be charged per question"}
           </p>
         </div>

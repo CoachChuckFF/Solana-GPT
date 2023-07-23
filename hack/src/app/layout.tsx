@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { WalletAdapter } from './components/hooks/WalletAdapter'
 import { ENV } from './components/models/env'
+import Head from 'next/head'
 
 
 export const metadata: Metadata = {
@@ -17,6 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Head>
+          <title>Solana-GPT</title>
+          <meta name="description" content="Pay Per Question!" />
+        </Head>
         <WalletAdapter rpcUrl={ENV.rpcEndpoint} showTestWallets={ENV.showTestWallets}>
           {children}
         </WalletAdapter>
