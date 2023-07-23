@@ -240,9 +240,7 @@ export default function Home() {
     const signatureMessage = `The following question: \n\n${questionText.substring(
       0,
       55
-    )}...\n\n will deduct roughly ~◎${questionCost.toPrecision(
-      2
-    )} lamports from your loader account! \n\nSign to Agree`;
+    )}...\n\n will deduct roughly ~◎${questionCost} lamports from your loader account! \n\nSign to Agree`;
     const encodedMessage = new TextEncoder().encode(signatureMessage);
 
     if (!wallet.signMessage) throw new Error("Wallet needs to sign");
