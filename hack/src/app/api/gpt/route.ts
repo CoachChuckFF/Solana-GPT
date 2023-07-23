@@ -55,7 +55,7 @@ export async function POST(req: Request) {
         return NextResponse.json({status: "OK", response: response, cost: lamportsToSpend.toNumber()});
     } catch(e) {
         console.log(e)
-        return NextResponse.json({status: "ERROR", error: e});
+        return NextResponse.json({status: "ERROR", error: `${e}`});
     }
 
   }
