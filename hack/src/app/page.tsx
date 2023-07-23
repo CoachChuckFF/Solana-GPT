@@ -26,6 +26,7 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import { getHopperKey } from "./components/controllers/hopper";
+import { Head } from "next/document";
 
 interface ExtendedChatMessage extends ChatMessage {
   isUser: boolean;
@@ -311,6 +312,16 @@ export default function Home() {
 
   return (
     <>
+      {/* Metadata */}
+      <Head>
+        <title>Solana-GPT</title>
+        <meta property="og:title" content="Solana-GPT" key="title" />
+        <meta name="description" content="Pay Per Question!" />
+        <meta property="og:title" content="Solana-GPT" />
+        <meta property="og:description" content="Pay Per Question!" />
+        <meta property="og:type" content="website" />
+      </Head>
+
       <div className="flex flex-col h-screen bg-gray-900 text-white">
         {/* Socials */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-opacity-10 text-5xl" style={{top: 'calc(50% - 5vh)'}}>
