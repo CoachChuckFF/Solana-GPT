@@ -268,6 +268,7 @@ export default function Home() {
             setMessages([...messages, userMessage, aiMessage]);
           })
           .catch((e) => {
+            alert(`Error: ${e}`)
             console.error(e);
           })
           .finally(() => {
@@ -337,7 +338,7 @@ export default function Home() {
           {hopperAccount && (
             <button
               onClick={() => {
-                createOrLoadHopperAccount(LAMPORTS_PER_SOL * 0.1);
+                createOrLoadHopperAccount(LAMPORTS_PER_SOL * 0.01);
               }}
               className="cursor-pointer hover:bg-blue-700 text-white font-bold px-4 rounded"
             >
