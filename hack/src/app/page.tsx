@@ -103,7 +103,7 @@ export default function Home() {
       {
         isUser: false,
         id: "",
-        text: "Hello there! Welcome to Solana-GPT! Here you can spend small amounts of solana per Chat-GPT4 question. To start you will need to:\n\n1. Connect your Solana wallet\n2. Load up your Hopper\n3. Ask a question!\n\nHow may I help?",
+        text: "Hello there! Welcome to Solana-GPT! Here you can spend small amounts of ◎Solana per Chat-GPT4 question. To start you will need to:\n\n1. Connect your Solana wallet\n2. Load up your Hopper\n3. Ask a question!\n\nHappy Chatting!",
         role: "system"
       },
     ])
