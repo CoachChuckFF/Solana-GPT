@@ -175,6 +175,7 @@ export default function Home() {
       console.log(e);
     }
 
+    setTimeout(updateHopperAccount, 987)
     updateHopperAccount();
     setIsLoading(false);
   };
@@ -206,6 +207,7 @@ export default function Home() {
       console.log(e);
     }
 
+    setTimeout(updateHopperAccount, 987);
     updateHopperAccount();
     setIsLoading(false);
   };
@@ -420,7 +422,7 @@ export default function Home() {
 <div
   className="flex-grow overflow-auto space-y-4 flex items-center justify-center h-[80vh]"
 >
-  <div className="w-full h-full overflow-y-auto px-32 mr-32">
+  <div className="w-full h-full overflow-y-auto px-32 pr-64">
     {messages.map((message, index) => (
       <div
         key={index}
