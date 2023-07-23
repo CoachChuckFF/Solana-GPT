@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <WalletAdapter rpcUrl={ENV.rpcEndpoint} showTestWallets={ENV.showTestWallets}>
+        <WalletAdapter rpcUrl={ENV.rpcEndpoint} showTestWallets={false}>
           {children}
         </WalletAdapter>
       </body>
