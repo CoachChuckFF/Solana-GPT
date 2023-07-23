@@ -321,11 +321,11 @@ export default function Home() {
           {program && !hopperAccount && (
             <button
               onClick={() => {
-                createOrLoadHopperAccount(LAMPORTS_PER_SOL * 0.1);
+                createOrLoadHopperAccount(LAMPORTS_PER_SOL * 0.01);
               }}
               className="cursor-pointer hover:bg-blue-700 text-white font-bold px-4 rounded"
             >
-              🔥 Create 0.1
+              🔥 Create 0.01
             </button>
           )}
           {hopperAccount && (
@@ -341,7 +341,7 @@ export default function Home() {
               }}
               className="cursor-pointer hover:bg-blue-700 text-white font-bold px-4 rounded"
             >
-              🚂 Load 0.1
+              🚂 Load 0.01
             </button>
           )}
           {hopperAccount && (
