@@ -297,7 +297,7 @@ export default function Home() {
           {/* Icons Section */}
           <div className="absolute top-4 left-4 space-x-4">
             <a
-              href="https://github.com/CoachChuckFF"
+              href="https://github.com/CoachChuckFF/Solana-GPT"
               target="_blank"
               rel="noopener noreferrer"
             >
