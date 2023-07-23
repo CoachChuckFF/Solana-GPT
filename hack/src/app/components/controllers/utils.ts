@@ -16,15 +16,15 @@ export function countTokens(text: string): number {
     const tokenCount = tokens.length;
   
     // Add a 34% safety margin
-    const safetyMargin = 0.34;
+    const safetyMargin = 0.20;
     const tokenCountWithMargin = Math.ceil(tokenCount * (1 + safetyMargin));
   
     return tokenCountWithMargin;
   }
 
-  export function getQuestionCost(text: string): BN {
+  export function getQuestionCost(text: string, shouldDouble: boolean = true): BN {
     return new BN(
-        countTokens(text) * ENV.lamportsPerToken
+        countTokens(text) * ENV.lamportsPerToken * (shouldDouble ? 2 : 1)
     )
   }
 
