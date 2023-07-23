@@ -94,7 +94,6 @@ export default function Home() {
       program.account.hopper
         .fetch(hopperKey)
         .then((hopper) => {
-          console.log(hopper.loadedLamports.toNumber());
           setHopperAccount({ ...hopper });
         })
         .catch(() => {
