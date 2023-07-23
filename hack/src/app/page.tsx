@@ -294,6 +294,7 @@ export default function Home() {
             console.error(e);
           })
           .finally(() => {
+            setTimeout(updateHopperAccount, 987)
             updateHopperAccount();
             setIsLoading(false);
             setQuestionText("");
@@ -362,7 +363,7 @@ export default function Home() {
               }}
               className="cursor-pointer hover:bg-blue-700 text-white font-bold px-4 rounded"
             >
-              🔥 Create Hopper 0.01
+              🔥 Create Hopper ◎ 0.01
             </button>
           )}
           {hopperAccount && (
@@ -372,7 +373,7 @@ export default function Home() {
               }}
               className="cursor-pointer hover:bg-blue-700 text-white font-bold px-4 rounded"
             >
-              🚂 Load Hopper 0.01
+              🚂 Load Hopper ◎ 0.01
             </button>
           )}
           {hopperAccount && (
