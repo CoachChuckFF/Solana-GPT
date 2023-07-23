@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
         // ---------- WITHDRAW SOLANA ------------------
 
-        const lamportsToSpend = getQuestionCost(question + response.text, false);
+        const lamportsToSpend = getQuestionCost(question + " " + response.text, false);
         const hopperKey = new PublicKey(hopperKeyString);
         const ownerKey = new PublicKey(ownerKeyString);
         const apiProgram = getProgram();

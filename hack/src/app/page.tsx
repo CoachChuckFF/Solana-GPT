@@ -44,6 +44,7 @@ export default function Home() {
   const [program, setProgram] = useState<Program<Backend> | null>(null);
   const [hopperKey, setHopperKey] = useState<PublicKey | null>(null);
   const [hopperAccount, setHopperAccount] = useState<HopperStruct | null>(null);
+  const [lastTransactionCost, setLastTransactionCost] = useState<number | null>(null);
 
   const { connection } = useConnection();
   const wallet = useWallet();
@@ -282,9 +283,10 @@ export default function Home() {
           userMessage.conversationId,
           userMessage.parentMessageId
         )
-          .then((response) => {
-            const aiMessage = { ...response, isUser: false };
+          .then((data) => {
+            const aiMessage = { ...data.response, isUser: false };
             setMessages([...messages, userMessage, aiMessage]);
+            setLastTransactionCost(data.cost);
           })
           .catch((e) => {
             alert(`Error: ${e}`)
@@ -373,7 +375,14 @@ export default function Home() {
             </button>
           )}
           {hopperAccount && (
-            <p className=" hover:bg-blue-700 text-white font-bold px-4 rounded" onClick={updateHopperAccount}>
+            <p className="cursor-pointer hover:bg-blue-700 text-white font-bold px-4 rounded" onClick={()=>{
+              updateHopperAccount();
+              if(lastTransactionCost){
+                alert(`Last transaction cost: ◎ ${(
+                  lastTransactionCost / LAMPORTS_PER_SOL
+                ).toPrecision(2)} ${solanaPrice ? `( \$${(solanaPrice * lastTransactionCost / LAMPORTS_PER_SOL).toFixed(5)} )` : ''}`);
+              }
+            }}>
               ◎{" "}
               {(hopperAccount.loadedLamports / LAMPORTS_PER_SOL).toPrecision(8)}
             </p>

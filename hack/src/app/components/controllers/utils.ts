@@ -52,6 +52,6 @@ export function countTokens(text: string): number {
 
       if(data.error){ throw new Error(data.error);}
 
-      return data.response as ChatMessage;
+      return data as {response: ChatMessage, cost: number};
 
     }
