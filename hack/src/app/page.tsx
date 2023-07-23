@@ -26,7 +26,7 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import { getHopperKey } from "./components/controllers/hopper";
-import { Head } from "next/document";
+import Head from "next/head";
 
 interface ExtendedChatMessage extends ChatMessage {
   isUser: boolean;

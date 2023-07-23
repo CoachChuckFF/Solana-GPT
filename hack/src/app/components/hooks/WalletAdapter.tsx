@@ -23,7 +23,7 @@ export const WalletAdapter = (props: WalletAdapterProps) => {
     const endpoint = useMemo(() => {return rpcUrl}, [rpcUrl]);
     const wallets = useMemo(() => [
         ...(showTestWallets ? getTestAdapter(new Connection(rpcUrl)) : []),
-    ],[]);
+    ],[rpcUrl, showTestWallets]);
 
     return (
         <ConnectionProvider endpoint={endpoint}>
