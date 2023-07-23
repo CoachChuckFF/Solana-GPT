@@ -4,8 +4,10 @@ Okay, so I came into work today ( Co-Working Spot ) and I saw there was a hackat
 
 Why would you pay?
 - You get premium questions without the month subscription
-- Anon question asking ( Also a tricky problem )
+- Anon question asking ( Also a tricky problem - double edged sword )
 - Get around the pesky 25 questions per 3 hours
+
+[Presentation](https://docs.google.com/presentation/d/1hW1Us3l0u3oOWCDJMefI0bWgOw9geqtVxt1pzT8soes/edit?usp=sharing)
 
 ## System
 1. You create a `Hopper` account and load it with 0.01 Solana
