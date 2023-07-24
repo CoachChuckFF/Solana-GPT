@@ -6,10 +6,14 @@ Why would you pay?
 - You get premium questions without the month subscription
 - Anon question asking ( Also a tricky problem - double edged sword )
 - Get around the pesky 25 questions per 3 hours
+- Anyone could build a ChatGPT app ontop of this and charge per usage - for example take a resume critiquing software, pay per critique ( where the critique is a multi-step, value adding process )
 
 [Presentation](https://docs.google.com/presentation/d/1hW1Us3l0u3oOWCDJMefI0bWgOw9geqtVxt1pzT8soes/edit?usp=sharing)
 
 Mainnet 'Hopper' Program Address `H8T4jm38UKJp2GBEG5s4X2NFT4U87CfLJVtTZVnh3zVs`
+
+## Problems
+- When deployed on Vercel, the API fetch to ChatGPT often takes too long and fails ( Edge Route ), a dedicated server may be needed. 
 
 ## System
 1. You create a `Hopper` account and load it with 0.01 Solana
