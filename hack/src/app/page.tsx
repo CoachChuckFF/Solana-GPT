@@ -335,7 +335,7 @@ export default function Home() {
 
       <div className="flex flex-col h-screen bg-gray-900 text-white">
         {/* Socials */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-opacity-10 text-5xl" style={{top: 'calc(50% - 5vh)'}}>
+        <div className="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-opacity-10 text-5xl" style={{top: 'calc(50% - 5vh)'}}>
           Solana-GPT
         </div>
 
