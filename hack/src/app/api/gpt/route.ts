@@ -8,7 +8,14 @@ import base58 from "bs58";
 import { NextResponse } from "next/server";
 import nacl from "tweetnacl";
 
+enum API_STATE {
+    checkingSignature = 'Checking Signature',
+    gettingChatGPT = 'Calling ChatGPT',
+    withdrawing = 'Withdrawing from Hopper'
+}
+
 export async function POST(req: Request) {
+    let state = API_STATE.checkingSignature;
 
     try {
 
@@ -23,13 +30,14 @@ export async function POST(req: Request) {
             throw new Error("Signature does not match!")
 
         // ---------- GRAB GPT REPONSE ------------------
+        state = API_STATE.checkingSignature;
         const response = await gptApi.sendMessage(question, {
             conversationId,
             parentMessageId
         })
 
         // ---------- WITHDRAW SOLANA ------------------
-
+        state = API_STATE.withdrawing;
         const lamportsToSpend = getQuestionCost(question + " " + response.text, false);
         const hopperKey = new PublicKey(hopperKeyString);
         const ownerKey = new PublicKey(ownerKeyString);
@@ -49,7 +57,7 @@ export async function POST(req: Request) {
         return NextResponse.json({status: "OK", response: response, cost: lamportsToSpend.toNumber()});
     } catch(e) {
         console.log(e)
-        return NextResponse.json({status: "ERROR", error: `${e}`});
+        return NextResponse.json({status: "ERROR", error: `Error at ${state}\n\n Error:\n${e}`});
     }
 
   }

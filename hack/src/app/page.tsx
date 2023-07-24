@@ -300,7 +300,7 @@ export default function Home() {
             setLastTransactionCost(data.cost);
           })
           .catch((e) => {
-            alert(`Error: ${e}`)
+            alert(`${e}`)
             console.error(e);
           })
           .finally(() => {
@@ -335,7 +335,7 @@ export default function Home() {
 
       <div className="flex flex-col h-screen bg-gray-900 text-white">
         {/* Socials */}
-        <div className="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-opacity-10 text-5xl" style={{top: 'calc(50% - 5vh)'}}>
+        <div className="absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-opacity-10 text-5xl" style={{top: 'calc(50% - 5vh)'}}>
           Solana-GPT
         </div>
 
@@ -420,7 +420,7 @@ export default function Home() {
 
 {/* Chat Section */}
 <div
-  className="flex-grow overflow-auto space-y-4 flex items-center justify-center h-[80vh]"
+  className="flex-grow overflow-auto space-y-4 flex items-center justify-center h-[80vh] z-1"
 >
   <div className="w-full h-full overflow-y-auto px-32 pr-64">
     {messages.map((message, index) => (
@@ -439,7 +439,7 @@ export default function Home() {
 </div>
 
         {/* Input Section */}
-        <div className="flex flex-col items-center px-4 pb-2 bg-gray-800 border-t-2 border-gray-700">
+        <div className="flex flex-col items-center px-4 pb-2 bg-gray-800 border-t-2 border-gray-700 z-2">
           <form
             onSubmit={handleSendMessage}
             className="flex justify-between items-center w-full mt-5"
